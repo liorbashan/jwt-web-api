@@ -14,6 +14,7 @@ export class LoginController {
   @Post()
   @UsePipes(new ValidationPipe({ transform: true }))
   public async login(@Body() req: LoginDto): Promise<any> {
-    return { username: req.username };
+    const result: any = await this._loginService.login(req);
+    return result;
   }
 }
