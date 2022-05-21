@@ -1,5 +1,6 @@
 import { LoginService } from './login.service';
 import {
+  BadRequestException,
   Body,
   Controller,
   Post,
@@ -14,7 +15,9 @@ export class LoginController {
   @Post()
   @UsePipes(new ValidationPipe({ transform: true }))
   public async login(@Body() req: LoginDto): Promise<any> {
-    const result: any = await this._loginService.login(req);
+    const result: any = await this._loginService.login(req).catch((err) => {
+      throw new BadRequestException();
+    });
     return result;
   }
 }

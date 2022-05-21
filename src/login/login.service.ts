@@ -1,7 +1,7 @@
 import { LoginDto } from './dto/loginDto';
 import { IAuthProvider } from '../interfaces/authProvider.interface';
 import { Injectable } from '@nestjs/common';
-import { ActiveDirectoryAuthenticationService } from '../services/activeDirectoryAuthentication.service';
+import { ActiveDirectoryAuthenticationService } from '../auth/activeDirectoryAuthentication.service';
 
 @Injectable()
 export class LoginService {
