@@ -4,11 +4,14 @@ import {
   Controller,
   Get,
   Post,
+  UseGuards,
   UsePipes,
   ValidationPipe,
+  Request,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LoginDto } from './login/dto/loginDto';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
 @Controller()
 export class AppController {
@@ -31,5 +34,12 @@ export class AppController {
       req.password,
     );
     return user;
+  }
+
+  @Post('secure')
+  @UseGuards(JwtAuthGuard)
+  public async test(@Request() req) {
+    console.log(req);
+    return 'ok';
   }
 }
