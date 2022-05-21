@@ -31,7 +31,7 @@ export class AuthService {
       groups: user.roles,
       issuer: 'Configuration Manager',
       iat: Math.floor(Date.now() / 1000),
-      exp: Math.floor(Date.now() / 1000) + 3600 * 24 * 30,
+      exp: Math.floor(Date.now() / 1000) + 3600 * 24,
     };
     return this.jwtService.sign(payload, {
       secret: getOsEnv('JWT_SECRET', 'qazwsx123'),
