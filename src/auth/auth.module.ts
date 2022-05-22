@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { getOsEnv } from '../lib/utils';
 import { JwtStrategy } from './jwt.strategy';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { JwtStrategy } from './jwt.strategy';
     JwtService,
     ActiveDirectoryAuthenticationService,
     JwtStrategy,
+    JwtAuthGuard,
   ],
 })
 export class AuthModule {}

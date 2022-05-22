@@ -39,7 +39,7 @@ export class AppController {
   @Post('secure')
   @UseGuards(JwtAuthGuard)
   public async test(@Request() req) {
-    console.log(req);
+    console.log(req.user);
     return 'ok';
   }
 }
