@@ -1,3 +1,4 @@
+import { CacheService } from './cache/cache.service';
 import { LoginRequest } from './auth/dto/loginRequest.dto';
 import { LoginResponse } from './auth/dto/loginResponse.dto';
 import { Roles } from './auth/decorator/roles.decorator';
@@ -11,6 +12,8 @@ import {
   UsePipes,
   ValidationPipe,
   Request,
+  Query,
+  HttpCode,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
@@ -20,6 +23,7 @@ export class AppController {
   constructor(
     private readonly appService: AppService,
     private authService: AuthService,
+    private cacheService: CacheService,
   ) {}
 
   @Get()
@@ -44,5 +48,21 @@ export class AppController {
   public async test(@Request() req) {
     console.log(req);
     return 'ok';
+  }
+
+  @Get('redis')
+  @UseGuards(JwtAuthGuard)
+  public async getkey(@Query('key') key: string) {
+    const val: any = await this.cacheService.getKey(key);
+    return val;
+  }
+
+  @Post('redis')
+  @UseGuards(JwtAuthGuard)
+  public async setkey(@Query('key') key: string, @Query('val') val: string) {
+    await this.cacheService.setValue(key, val).catch((err) => {
+      throw new Error(err);
+    });
+    return;
   }
 }
