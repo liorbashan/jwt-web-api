@@ -1,3 +1,4 @@
+import { LoginRequest } from './auth/dto/loginRequest.dto';
 import { LoginResponse } from './auth/dto/loginResponse.dto';
 import { Roles } from './auth/decorator/roles.decorator';
 import { AuthService } from './auth/auth.service';
@@ -12,7 +13,6 @@ import {
   Request,
 } from '@nestjs/common';
 import { AppService } from './app.service';
-import { LoginDto } from './login/dto/loginDto';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
 @Controller()
@@ -30,7 +30,7 @@ export class AppController {
 
   @Post('auth/login')
   @UsePipes(new ValidationPipe({ transform: true }))
-  async login(@Body() req: LoginDto): Promise<any> {
+  async login(@Body() req: LoginRequest): Promise<any> {
     const user: LoginResponse = await this.authService.validateUser(
       req.username,
       req.password,
