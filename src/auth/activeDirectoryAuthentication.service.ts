@@ -1,3 +1,4 @@
+import { Memberships } from './memberships';
 import { IAuthProvider } from '../interfaces/authProvider.interface';
 import { Injectable } from '@nestjs/common';
 import { getOsEnv } from '../lib/utils';
@@ -7,14 +8,14 @@ const AD = require('activedirectory2').promiseWrapper;
 
 @Injectable()
 export class ActiveDirectoryAuthenticationService implements IAuthProvider {
-  private permissionGroups: string[] = Object.values({});
+  private permissionGroups: string[] = Object.values(Memberships);
 
   public async authenticate(username: string, password: string): Promise<any> {
-    const user = new User();
-    user.displayName = 'Lior Bashan';
-    user.email = 'xxx@bbb.com';
-    user.roles = ['XXX', 'YYY'];
-    return user;
+    // const user = new User();
+    // user.displayName = 'Lior Bashan';
+    // user.email = 'xxx@bbb.com';
+    // user.roles = ['XXX', 'YYY'];
+    // return user;
     const ldapHost = getOsEnv('LDAP_SERVER_HOST');
     const baseDN = getOsEnv('LDAP_BASE_DN');
     const config = { url: ldapHost, baseDN, username, password };
@@ -25,9 +26,8 @@ export class ActiveDirectoryAuthenticationService implements IAuthProvider {
       const authenticated = await ad
         .authenticate(username, password)
         .catch((err: any) => {
-          console.log(err);
           reject(err);
-          return;
+          return err;
         });
       if (authenticated) {
         const user = await ad.findUser(username).catch((err: any) => {

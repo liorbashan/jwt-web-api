@@ -1,3 +1,5 @@
+import { LoginResponse } from './auth/dto/loginResponse.dto';
+import { Roles } from './auth/decorator/roles.decorator';
 import { AuthService } from './auth/auth.service';
 import {
   Body,
@@ -29,7 +31,7 @@ export class AppController {
   @Post('auth/login')
   @UsePipes(new ValidationPipe({ transform: true }))
   async login(@Body() req: LoginDto): Promise<any> {
-    const user: any = await this.authService.validateUser(
+    const user: LoginResponse = await this.authService.validateUser(
       req.username,
       req.password,
     );
@@ -38,6 +40,7 @@ export class AppController {
 
   @Post('secure')
   @UseGuards(JwtAuthGuard)
+  @Roles('BannerAdminRoot')
   public async test(@Request() req) {
     console.log(req);
     return 'ok';
